@@ -3,13 +3,13 @@
 INF = float('inf')
 graph = {}
 graph['start'] = {}
-graph['start']['a'] = 6
+graph['start']['a'] = 5
 graph['start']['b'] = 2
 graph['a'] = {}
-graph['a']['fin'] = 1
+graph['a']['fin'] = 2
 graph['b'] = {}
 graph['b']['a'] = 3
-graph['b']['fin'] = 5
+graph['b']['fin'] = 6
 graph['fin'] = {}
 
 class Dijkstra:
@@ -17,7 +17,20 @@ class Dijkstra:
         # Создание графа
         self.graph = graph
 
-        # Создание таблицы кратчайших расстояний
+        # Таблица крат. расстояний
+        self.__create_costs()
+
+        # Создание таблицы родителей
+        self.__create_parents()
+
+        # Список обработанных узлов
+        self.processed = []
+
+        # Самый "дешевый" путь
+        self.shortest_route = ['fin']
+
+    def __create_costs(self):
+        """Создание таблицы кратчайших расстояний"""
         self.costs = {}
         for node in self.graph:
             if node == 'start':
@@ -27,14 +40,11 @@ class Dijkstra:
             else:
                 self.costs[node] = INF
 
-        # Создание таблицы родителей
+    def __create_parents(self):
+        """Создание таблицы родителей"""
         self.parents = {}
-        self.parents['a'] = 'start'
-        self.parents['b'] = 'start'
-        self.parents['in'] = None
-
-        # Список обработанных узлов
-        self.processed = []
+        for node in self.graph['start']:
+            self.parents[node] = 'start'
 
     def search(self):
         """ Поиск кратчайшего пути. """
@@ -49,6 +59,7 @@ class Dijkstra:
                     self.parents[i] = node
             self.processed.append(node)
             node = self._find_lowest_cost_node(self.costs)
+        self.__get_shortest_route()
 
     def _find_lowest_cost_node(self, costs: dict) -> str:
         """ Находит узел с наименьшей стоимостью из необработанных. """
@@ -61,12 +72,28 @@ class Dijkstra:
                 lowest_cost_node = node
         return lowest_cost_node
 
+    def __get_shortest_route(self):
+        """Создаёт список с кратчайшим марштуром и стоимостью"""
+        while True:
+            try:
+                node = self.parents[self.shortest_route[-1]]
+                self.shortest_route.append(node)
+            except:
+                self.shortest_route.reverse()
+                break
+
+
     def show_result(self):
         """ Печатает результаты. """
         print("Стоимости:")
         print(self.costs)
         print("Родители:")
         print(self.parents)
+        print('Самый короткий путь:')
+        print(self.shortest_route)
+        print("Стоимость:")
+        print(self.costs['fin'])
+
 
 dijkstra = Dijkstra(graph)
 dijkstra.show_result()
