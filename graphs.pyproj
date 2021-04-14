@@ -5,7 +5,7 @@
     <ProjectGuid>3d98ec1e-7e8f-4fd4-b637-4fa962c5940c</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>greedy_algorithm.py</StartupFile>
+    <StartupFile>dynamic_programming.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,6 +24,9 @@
   <ItemGroup>
     <Compile Include="breadth_first_search.py" />
     <Compile Include="dijkstra%27s_algorithm.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dynamic_programming.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="greedy_algorithm.py">
