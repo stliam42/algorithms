@@ -5,7 +5,7 @@
     <ProjectGuid>3d98ec1e-7e8f-4fd4-b637-4fa962c5940c</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>greedy_algorithm.py</StartupFile>
+    <StartupFile>dynamic_programming.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
