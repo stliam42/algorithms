@@ -5,12 +5,12 @@
     <ProjectGuid>3d98ec1e-7e8f-4fd4-b637-4fa962c5940c</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>dynamic_programming.py</StartupFile>
+    <StartupFile>k_nearest_neighbors.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>graphs</Name>
+    <Name>grokking algorithms</Name>
     <RootNamespace>algorithms</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -30,6 +30,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="greedy_algorithm.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="grosshoper.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="k_nearest_neighbors.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lcs.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
