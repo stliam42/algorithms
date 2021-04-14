@@ -26,6 +26,9 @@
     <Compile Include="dijkstra%27s_algorithm.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dynamic_programming.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="greedy_algorithm.py">
       <SubType>Code</SubType>
     </Compile>
