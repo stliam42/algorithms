@@ -5,7 +5,7 @@
     <ProjectGuid>3d98ec1e-7e8f-4fd4-b637-4fa962c5940c</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>k_nearest_neighbors.py</StartupFile>
+    <StartupFile>grosshoper.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
