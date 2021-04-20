@@ -1,3 +1,5 @@
+from random import randint
+
 def max_fraction(n: int, a: tuple) -> tuple:
     """
     Отношение.
@@ -217,18 +219,123 @@ def route_without_climbs(number_of_heels: int,
     """
 
     p = [0] * (n)
+    START = 0
+    END = 1
 
     for i in range(1, n):
         p[i] = p[i-1] + (1 if heels_heights[i] > heels_heights[i-1] else 0)
 
     for i in range(number_of_requests):
-        print(p[routs[i][1] - 1] - p[routs[i][0] - 1])
+        print(p[routs[i][END] - 1] - p[routs[i][START] - 1])
 
 
+def divided_by_three(number_of_items: int, items: tuple) -> tuple:
+    """
+    Сумма, делящаяся на три.
 
+    Необходимо найти самый большой непрерывный фрагмент в массиве a1,a2...aN,
+    сумма элементов которого делится на 3.
 
+    Входные данные:
+    В первой строке содержится число N≤100000. Во второй строке даны N чисел,
+    по модулю не превосходящих 109, — элементы массива.
 
-#print(route_without_climbs(n, m, h, r))
+    Выходные данные:
+    Выведите два числа — индексы начала и конца фрагмента. Если таких фрагментов
+    несколько, то выведите фрагмент с минимальным индексом начала.
+
+    Если ответа не существует, то выведите единственное число −1.
+    """
+    p = [0] * (number_of_items + 1)
+
+    # Заготавливаем словарь с лучшими начальными и конечными индексами,
+    # флагами регистрации значений и длинами фрагментов.
+    # Индексы списков совпадают с остатками от деления: 
+    # индекс 0 соответствует группе с остатком от деления по 
+    # модулю 3 равным 0 и т.д.
+    best = {'start': [0] * 3,
+            'flags': [False] * 3,
+            'end' : [-1] * 3,
+            'lenght': [-1] * 3,
+            'index': -1,
+            'i': 0,
+            'j': 0,
+            }
+
+    # Вычисляем остаток по модулю 3 от суммы элементов от 0 до i.
+    for i in range(1, number_of_items + 1):
+        p[i] = (p[i-1] + items[i-1]) % 3
+
+        # Попутно регистрируем индексы первых появлений сумм, дающих остаток 1 и 2. 
+        # Данные индексы будут точкой отсчёта для нахождения фрагмента максимальной длинны.
+        # Т.к. разность сумм, остатки от деления по модулю 3 которых равны, дают число,
+        # делящееся на 3, то самым длинным фрагментом будет разность сумм с одинаковым 
+        # остатком и максимальным расстоянием между началом и концом.
+        # Остаток 0 даёт 0-ой элемент, поэтому для него индекс не ищем.
+        if not all(best['flags']):
+            for j in range(1, 3):
+                if p[i] == j and not best['flags'][j]:
+                    best['start'][j] = i
+                    best['flags'][j] = True
+
+    # Сбрасываем флаги, чтобы регистрировать последние суммы, 
+    # которые дают остаток 0, 1, 2.
+    best['flags'] = [False] * 3
+
+    # Находим индексы конечных сумм, дающих 0, 1, 2.
+    for i in range(number_of_items, 0, -1):
+        if all(best['flags']):
+            break
+        for j in range(3):
+                if p[i] == j and not best['flags'][j]:
+                    best['end'][j] = i
+                    best['flags'][j] = True
+
+    # Находим длины фрагментов на 0, 1, 2.
+    for i in range(3):
+        best['lenght'][i] = best['end'][i] - best['start'][i]
+
+    # Находим максимальную длинну.
+    maxlen = max(best['lenght'])
+
+    # Если фрагментов нет, или на вход было подано 0 элеметнов - 
+    # выводим сообщение об отсутствии ответа.
+    if maxlen == 0 or number_of_items == 0:
+        return -1
+
+    # Выбираем лучшую левую границу. Так как в задаче необходимо 
+    # найти фрагмент с минимальным индексом начала, то мы находим, 
+    # какой фрагмент максимальной длинны раньше начинается. 
+    # Фильтруем начальные значения на основании длинны фрагмента и 
+    # выбираем минимальный из них.
+    best_start = min(filter(lambda x: True if 
+                           best['lenght'][best['start'].index(x)] == maxlen 
+                           else False, 
+                           best['start']))
+
+    # Берем индекс (0, 1, 2) для лучшего фрагмента. 
+    # Выше было найдено лучшее начало, его индекс и берем.
+    best['index'] = best['start'].index(best_start)
+
+    # Берем i и j границы по индексу.
+    best['i'] = best['start'][best['index']] + 1
+    best['j'] = best['end'][best['index']]
+
+    return p, best, best['i'], best['j']
+
+n = 20
+a = [randint(0, 50) for i in range(n)]
+
+#n = int(input())
+#a = tuple(map(int, input().split())) 
+print(a, end='\n\n')
+print(divided_by_three(n, a))
+
+#answer = divided_by_three(n, a)
+#if  type(answer) == int:
+#    print(answer)
+#else:
+#    print(*answer)
 
 #n, x = (map(int, input().split()))
 #a = tuple(map(int, input().split()))
