@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>sirius_algorithms</Name>
     <RootNamespace>sirius_algorithms</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="number_theory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
