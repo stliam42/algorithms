@@ -420,14 +420,69 @@ def city_che(number_of_items: int,
     return count
 
 
-n = 3
-k = 2
-a = (1,7,12)
+def shirts_and_pants(number_of_shirts: int,
+                     shirts_colors: tuple,
+                     number_of_pants: int,
+                     pants_colors: tuple) -> tuple:
+    """
+    Стильная одежда.
 
-print(city_che(n,k,a))
+    Глеб обожает шопинг. Как-то раз он загорелся идеей подобрать себе майку и 
+    штаны так, чтобы выглядеть в них максимально стильно. В понимании Глеба
+    стильность одежды тем больше, чем меньше разница в цвете элементов его одежды.
 
+    В наличии имеется N (1 ≤ N ≤ 105) маек и M (1 ≤ M ≤ 105) штанов, про 
+    каждый элемент известен его цвет (целое число от 1 до 107). Помогите 
+    Глебу выбрать одну майку и одни штаны так, чтобы разница в их цвете 
+    была как можно меньше.
+
+    Входные данные:
+    Сначала вводится информация о майках: в первой строке целое число
+    N (1 ≤ N ≤ 105) и во второй N целых чисел от 1 до 107 — цвета имеющихся
+    в наличии маек. Гарантируется, что номера цветов идут в возрастающем 
+    порядке (в частности, цвета никаких двух маек не совпадают).
+
+    Далее в том же формате идёт описание штанов: их количество M (1 ≤ M ≤ 105)
+    и в следующей строке M целых чисел от 1 до 107 в возрастающем 
+    порядке — цвета штанов.
+
+    Выходные данные:
+    Выведите пару неотрицательных чисел — цвет майки и цвет штанов, 
+    которые следует выбрать Глебу. Если вариантов выбора несколько, 
+    выведите любой из них.
+    """
+    if number_of_shirts == number_of_pants == 1:
+        return(shirts_colors[0], pants_colors[0])
+
+    i = 0
+    j = 0
+    ibest = jbest = 0
+    diff = abs(shirts_colors[i] - pants_colors[j])
+    go = True
+
+    while go:
+        if (i == number_of_shirts or 
+                j == number_of_pants):
+            go = False
+
+        elif shirts_colors[i] == pants_colors[j]:
+            ibest = i
+            jbest = j
+            go = False
+
+        elif abs(shirts_colors[i] - pants_colors[j]) >= diff:
+            if shirts_colors[i] > pants_colors[j]:
+                j += 1
+            else:
+                i += 1
+
+        else:
+            diff = abs(shirts_colors[i] - pants_colors[j])
+            ibest = i
+            jbest = j
+
+    return (shirts_colors[ibest], pants_colors[jbest])
 
 
 #n, x = map(int, input().split())
 #a = tuple(map(int, input().split()))
-#b = tuple(map(int, input().split()))
