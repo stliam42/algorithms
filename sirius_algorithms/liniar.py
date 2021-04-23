@@ -484,5 +484,54 @@ def shirts_and_pants(number_of_shirts: int,
     return (shirts_colors[ibest], pants_colors[jbest])
 
 
+def beauty_above_all(number_of_items: int,
+                    type_of_numbers: int,
+                    items: tuple) -> tuple:
+
+    counter = [0 for i in range(type_of_numbers)]
+    counter[items[0] - 1] += 1
+    ibest = 0
+    jbest = number_of_items
+    i = j = 0
+    go = True
+    zeros = type_of_numbers - 1
+
+
+    while go:
+        if not zeros and j - i < jbest - ibest:
+            ibest, jbest = i, j
+            if jbest - ibest + 1 == type_of_numbers:
+                go = False
+
+        elif j == number_of_items - 1 and zeros:
+            go = False
+
+        else:
+            if zeros:
+                j += 1
+                if counter[items[j] - 1] == 0:
+                    zeros -= 1
+                counter[items[j] - 1] += 1
+            else:
+                if counter[items[i] - 1] == 1:
+                    zeros += 1
+                counter[items[i] - 1] -= 1
+                i += 1
+
+    return (ibest+1, jbest+1)
+        
+
+n = 10 ** 5
+k = 25000
+a = (1,2,3,4,5,6)
+a = [0] * n
+
+for i in range(1,n):
+    a[i] = a[i-1] + 1 if a[i-1] < k else k
+
+print(a)
+print(beauty_above_all(n,k,a))
+
+
 #n, x = map(int, input().split())
 #a = tuple(map(int, input().split()))

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>560c09a7-5ad0-4635-8dcb-6bcce5eac3fe</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>liniar.py</StartupFile>
+    <StartupFile>liniar_data.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,6 +26,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="liniar.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="liniar_data.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="number_theory.py">
