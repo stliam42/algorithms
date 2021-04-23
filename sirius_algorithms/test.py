@@ -1,8 +1,5 @@
-best = {'start': (1,2,3),
-        'len': (2,5,4),
-        }
-maxlen = max(best['len'])
+operation = {'+': lambda x, y: x + y,
+                '-': lambda x, y: x - y,
+                '*': lambda x, y: x * y}
 
-y = list(filter(lambda x: True if best['len'][best['start'].index(x)] == maxlen else False, best['start']))
-
-print(y)
+print(operation['-'](1,7))
