@@ -1,5 +1,21 @@
-operation = {'+': lambda x, y: x + y,
-                '-': lambda x, y: x - y,
-                '*': lambda x, y: x * y}
+class Parent:
 
-print(operation['-'](1,7))
+    def __init__(self):
+        self.counter = 0
+
+    def inc(self):
+        self.counter += 1
+
+class Test(Parent):
+
+    def __init__(self):
+        self.counter = 10
+
+    def dec(self):
+        self.counter -= 1
+
+
+t = Test()
+print(t.counter)
+t.inc()
+print(t.counter)
