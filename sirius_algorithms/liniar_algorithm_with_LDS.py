@@ -19,6 +19,28 @@ class Stack(list):
         return len(self)
 
 
+def get_min_list(items: list, inf: int) -> list:
+    """
+    Функция находит индексы меньших ближайщих элементов в направлении слева направо.
+    a - входной список,
+    inf - конструктивная бесконечность, должна быть меньше 
+    меньшего элемента в массиве.
+    Функция возвращает список.
+    """
+    
+    items_with_barriers = [inf] + items + [inf]
+    answer = [0] * (len(items) + 2)
+    st = Stack(0)
+
+    for i in range(1, len(items) + 2):
+        while items_with_barriers[i] < items_with_barriers[st.back]:
+            answer[st.pop()] = i - 1
+        else:
+            st.push(i)
+
+    return answer[1:-1]
+
+
 def line_land(n: int, a: tuple) -> list:
     """
     Великое Лайнландское переселение.
@@ -66,7 +88,7 @@ def get_greatest_rectangle_from_bar_graph(n: int, bars: tuple) -> int:
     Гистограмма.
 
     Гистограмма является многоугольником, сформированным из 
-    последовательности прямоугольников, выровненных на общей 
+    последовательности прямоугольников,выровненных на общей 
     базовой линии. Прямоугольники имеют равную ширину, но 
     могут иметь различные высоты. Например, фигура слева 
     показывает гистограмму, которая состоит из прямоугольников
@@ -187,13 +209,31 @@ def get_greatest_rectangle_with_width(n, bars: tuple) -> int:
     return max(answer) # Возвращаем самый большой прямоугольник из найденных.
 
 
-n = 5
-a = ((1,2), (2,3), (3,2), (2,3), (1,2))
+def min_on_the_segment(number_of_elements: int,
+                      window: int, 
+                      items: list) -> list:
+    min_list = get_min_list(items, -1)
+    results = [0] * (number_of_elements - window + 1)
+    imin = 0
 
-n = int(input())
-a = [tuple(map(int, input().split())) for i in range(n)]
+    for i in range(0, number_of_elements - window + 1):
+        if imin < i:
+            imin = i
+
+        while min_list[imin] < i +  window:
+              imin = min_list[imin]
+        results[i] = imin
+
+    return [items[i] for i in results]
+
+number_of_elements = 3
+window = 2
+a = [5,2,3]
+
+#n = int(input())
+#a = [tuple(map(int, input().split())) for i in range(n)]
 #n, a = request.pop(0), request
 #n, x = map(int, input().split())
 #a = tuple(map(int, input().split()))
 
-print(get_greatest_rectangle_with_width(n, a), sep='\n')
+print(*min_on_the_segment(number_of_elements,window,a), sep='\n')
