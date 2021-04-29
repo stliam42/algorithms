@@ -1,4 +1,5 @@
 from random import randint
+import datetime
 
 class Stack(list):
 
@@ -30,25 +31,33 @@ def get_prefix_sum(a: list) -> list:
     return prefix_sum
 
 
-def get_list_of_next_smaller_number_index(items: list) -> list:
+def get_list_of_next_smaller_number_index(items: list, direction: str='right') -> list:
     """
-    Функция находит индексы меньших ближайщих элементов в направлении слева направо.
-    a - входной список,
-    inf - конструктивная бесконечность, должна быть меньше 
-    меньшего элемента в массиве.
+    Функция находит индексы меньших ближайщих элементов.
+    items - входной список,
+    direction - направление поиска.
     Функция возвращает список.
     """
     
-    inf = float('inf')
-    items_with_barriers = [-inf] + items + [-inf]
+    inf = - 1
+    items_with_barriers = [inf] + items + [inf]
     answer = [0] * (len(items) + 2)
-    st = Stack(0)
+    
+    if direction == 'right':
+        st = [0]
+        for i in range(1, len(items) + 2):
+            while items_with_barriers[i] < items_with_barriers[st[-1]]:
+                answer[st.pop()] = i - 1
+            else:
+                st.append(i)
 
-    for i in range(1, len(items) + 2):
-        while items_with_barriers[i] < items_with_barriers[st.back]:
-            answer[st.pop()] = i - 1
-        else:
-            st.push(i)
+    elif direction == 'left':
+        st = [len(answer) - 1]
+        for i in range(len(items), -1, -1):
+            while items_with_barriers[i] < items_with_barriers[st[-1]]:
+                answer[st.pop()] = (i - 1) if (i - 1) >= 0 else len(items)
+            else:
+                st.append(i)
 
     return answer[1:-1]
 
@@ -329,6 +338,94 @@ def fortress(bars: list, gap: int) -> tuple:
 
     return len(answer), answer[::-1]
 
+
+def get_skyscrapers_plan(max_heights: list) -> list:
+    """
+    Небоскрёбы.
+
+    В Берляндии активно застраивается окраина столицы. Компания 
+    "Kernel Panic" руководит постройкой жилого комплекса из 
+    небоскрёбов в Новой Берлскве. Все небоскрёбы строятся вдоль 
+    шоссе. Известно, что компания уже купила n участков возле 
+    шоссе и готовится возводить небоскрёбы, по одному зданию на 
+    один участок.
+
+    Архитекторы при планировании зданий должны учитывать несколько
+    требований. Во-первых, поскольку земля на каждом участке имеет 
+    разные свойства, для каждого небоскрёба есть своё ограничение 
+    по количеству этажей, которое он может иметь. Во-вторых, согласно
+    дизайн-коду города, недопустима ситуация, когда для какого-то 
+    небоскрёба сразу по обе стороны от него есть небоскрёбы выше него.
+
+    Более формально, пронумеруем участки целыми числами от 1 до n. 
+    Тогда у небоскрёба на участке с номером i количество этажей ai 
+    не может быть запланировано больше mi, и также не может быть, 
+    что на плане существуют два участка с номерами j и k таких, 
+    что j<i<k и aj>ai<ak.
+
+    Компания хочет, чтобы суммарное количество этажей в построенных 
+    небоскрёбах было как можно больше. Помогите ей спланировать 
+    количество этажей для каждого небоскрёба оптимальным образом, 
+    то есть так, чтобы выполнялись все ограничения, и при этом 
+    суммарное количество этажей было максимально возможным среди всех
+    возможных вариантов, удовлетворяющих данным ограничениям.
+
+    Входные данные:
+    В первой строке задано одно целое число n (1≤n≤500 000) — 
+    количество участков.
+
+    Вторая строка содержит n целых чисел. i-е число задает значение mi 
+    (1≤mi≤10^9) — максимально возможное количество этажей для небоскрёба
+    на участке i.
+
+    Выходные данные:
+    Выведите n чисел ai — количества этажей в плане для каждого небоскрёба
+    такие, что выполняются все ограничения, а суммарное количество этажей
+    во всех небоскрёбах максимально возможное. Если возможных ответов 
+    несколько, выведите любой.
+    """
+
+    left_smaller_list = get_list_of_next_smaller_number_index(max_heights, 'left')
+    right_smaller_list = get_list_of_next_smaller_number_index(max_heights, 'right')
+
+    max_left_part =  [0] * len(max_heights)
+    max_right_part = [0] * len(max_heights)
+    summary_heights = [0] * len(max_heights)
+    skyscrapers_plan = [0] * len(max_heights)
+
+    # Наибольшая сумма небоскребов слева от текущего
+    for i in range(len(max_heights)):
+        if left_smaller_list[i] == len(max_heights):
+            max_left_part[i] = max_heights[i] * (i + 1)
+        else:
+            max_left_part[i] = max_heights[i] * (i - left_smaller_list[i]) + max_left_part[left_smaller_list[i]]
+
+    # Наибольшая сумма небоскребов справа от текущего
+    for i in reversed(range(len(max_heights))):
+        if right_smaller_list[i] == len(max_heights):
+            max_right_part[i] = max_heights[i] * (len(max_heights) - i)
+        else:
+            max_right_part[i] = max_heights[i] * (right_smaller_list[i] - i) + max_right_part[right_smaller_list[i]]
+
+    heigiest_skyscraper_index = 0
+    # Находим лучший центральный небоскреб
+    for i in range(len(max_heights)):
+        summary_heights[i] = max_left_part[i] + max_right_part[i] - max_heights[i]
+        if summary_heights[i] > summary_heights[heigiest_skyscraper_index]:
+            heigiest_skyscraper_index = i
+
+    skyscrapers_plan[heigiest_skyscraper_index] = max_heights[heigiest_skyscraper_index]
+
+    # Формируем план застройки до самого высокого небоскреба
+    for i in reversed(range(0, heigiest_skyscraper_index)):
+        skyscrapers_plan[i] = min(max_heights[i], skyscrapers_plan[i+1])
+
+    # Формируем план застройки после самого высокого небоскреба
+    for i in range(heigiest_skyscraper_index + 1, len(max_heights)):
+        skyscrapers_plan[i] = min(max_heights[i], skyscrapers_plan[i-1])
+
+    return skyscrapers_plan
+
 #n, x = map(int, input().split())
 #a = tuple(map(int, input().split()))
 #n = 1
@@ -338,10 +435,8 @@ def fortress(bars: list, gap: int) -> tuple:
 #print(*fortress(a, gap), sep='\n')
 
 
-n, gap = map(int, input().split())
-a = list(map(int, input().split()))
+n = int(input())
 
-answer = fortress(a, gap)
+a = [randint(1, 1000) for i in range(n)]
 
-print(answer[0])
-print(*answer[1])
+get_skyscrapers_plan(a)
