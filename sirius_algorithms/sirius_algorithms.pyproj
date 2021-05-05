@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>560c09a7-5ad0-4635-8dcb-6bcce5eac3fe</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>liniar_data.py</StartupFile>
+    <StartupFile>built-in_data_structures.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,16 +22,21 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="built-in_data_structures.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="dynamic.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="liniar.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="liniar_data.py">
+    <Compile Include="liniar_algorithm_with_LDS.py" />
+    <Compile Include="liniar_data_structures.py" />
+    <Compile Include="number_theory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="number_theory.py">
+    <Compile Include="sorting.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="test.py">
